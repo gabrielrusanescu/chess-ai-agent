@@ -11,7 +11,7 @@ class AgentDefinitionTests(unittest.TestCase):
     def test_agent_name(self) -> None:
         self.assertEqual(
             root_agent.name,
-            "summer_school_assistant",
+            "chess_assistant",
         )
 
     def test_agent_has_three_tools(self) -> None:

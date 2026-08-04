@@ -23,9 +23,13 @@ class KnowledgeProvider(Protocol):
         """Return the contents of one Markdown document."""
         ...
 
+    def append_note(self, filename: str, note: str) -> None:
+        """Append text to a Markdown document."""
+        ...
+
 
 class LocalKnowledgeProvider:
-    """Read Markdown documents from a local directory."""
+    """Read and update Markdown documents from a local directory."""
 
     def __init__(self, knowledge_directory: Path):
         self.knowledge_directory = knowledge_directory
@@ -58,9 +62,23 @@ class LocalKnowledgeProvider:
 
         return path.read_text(encoding="utf-8")
 
+    def append_note(self, filename: str, note: str) -> None:
+        """Append text to a local Markdown file."""
+
+        if not filename.strip():
+            raise ValueError("The filename cannot be empty.")
+
+        file_path = self.knowledge_directory / filename
+
+        if not file_path.exists() or not file_path.is_file():
+            raise FileNotFoundError(f"File '{filename}' does not exist.")
+
+        with open(file_path, "a", encoding="utf-8") as f:
+            f.write(f"\n\n{note}\n")
+
 
 class CloudKnowledgeProvider:
-    """Read Markdown documents from a Google Cloud Storage bucket."""
+    """Read and update Markdown documents from a Google Cloud Storage bucket."""
 
     def __init__(
         self,
@@ -98,3 +116,19 @@ class CloudKnowledgeProvider:
             return blob.download_as_text(encoding="utf-8")
         except NotFound as error:
             raise FileNotFoundError(filename) from error
+
+    def append_note(self, filename: str, note: str) -> None:
+        """Append text to a Markdown object in Google Cloud Storage."""
+
+        if not filename.strip():
+            raise ValueError("The filename cannot be empty.")
+
+        blob = self.bucket.blob(filename)
+
+        try:
+            existing_content = blob.download_as_text(encoding="utf-8")
+        except NotFound as error:
+            raise FileNotFoundError(f"File '{filename}' does not exist.") from error
+
+        updated_content = f"{existing_content}\n\n{note}\n"
+        blob.upload_from_string(updated_content, content_type="text/markdown")

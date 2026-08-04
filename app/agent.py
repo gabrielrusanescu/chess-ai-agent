@@ -1,5 +1,5 @@
 """
-ADK agent definition for the Summer School AI Assistant.
+ADK agent definition for the Chess AI Assistant.
 """
 
 from pathlib import Path
@@ -58,16 +58,17 @@ knowledge_provider = create_knowledge_provider()
 assistant_tools = AssistantTools(knowledge_provider)
 
 root_agent = Agent(
-    name="summer_school_assistant",
+    name="chess_assistant",
     model=config.model,
     description=(
-        "Answers questions about the Google Cloud and cloud-native "
-        "topics covered during the UPB summer school."
+        "Answers questions about chess rules, openings, tactics, "
+        "endgames, history, and computer analysis."
     ),
     instruction=SYSTEM_PROMPT,
     tools=[
         assistant_tools.list_documents,
         assistant_tools.read_document,
         assistant_tools.search_documents,
+        assistant_tools.append_note,
     ],
 )

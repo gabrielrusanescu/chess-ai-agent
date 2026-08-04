@@ -77,7 +77,7 @@ def main() -> None:
     assert read_result["content"].strip()
     print_check("read_document works")
 
-    search_result = tools.search_documents("Docker")
+    search_result = tools.search_documents("castling")
     assert search_result["status"] == "success"
     assert isinstance(search_result["matches"], list)
     assert all("filename" in match for match in search_result["matches"])
@@ -92,7 +92,7 @@ def main() -> None:
     assert empty_search_result["status"] == "error"
     print_check("Empty-search handling works")
 
-    assert root_agent.name == "summer_school_assistant"
+    assert root_agent.name == "chess_assistant"
     assert len(root_agent.tools) == 3
     print_check("ADK agent loaded")
     print(f"  Agent: {root_agent.name}")

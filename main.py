@@ -7,7 +7,7 @@ from app.tools import AssistantTools
 def main() -> None:
     """Demonstrate the local knowledge tools without using Google Cloud."""
 
-    print("\n=== Summer School AI Assistant ===\n")
+    print("\n=== Chess AI Assistant ===\n")
 
     provider = LocalKnowledgeProvider(Path("knowledge"))
     tools = AssistantTools(provider)
@@ -22,20 +22,20 @@ def main() -> None:
 
     print(f"\nTotal documents: {documents_result['document_count']}")
 
-    print("\nReading day2.md")
+    print("\nReading rules_and_setup.md")
     print("-------------------")
 
-    reading_result = tools.read_document("day2.md")
+    reading_result = tools.read_document("rules_and_setup.md")
 
     if reading_result["status"] == "success":
         print(reading_result["content"])
     else:
         print(reading_result["error_message"])
 
-    print("\nSearching for 'Docker'")
+    print("\nSearching for 'castling'")
     print("----------------------")
 
-    search_result = tools.search_documents("Docker")
+    search_result = tools.search_documents("castling")
 
     if search_result["status"] == "error":
         print(search_result["error_message"])
@@ -53,6 +53,18 @@ def main() -> None:
                 f"  line {excerpt['line_number']}: "
                 f"{excerpt['text']}"
             )
+    print("\nAppending note to rules_and_setup.md")
+    print("-----------------------------------")
+
+    note_result = tools.append_note(
+        "rules_and_setup.md",
+        "Note: En passant must be executed on the turn immediately following the opponent's pawn move."
+    )
+
+    if note_result["status"] == "success":
+        print(note_result["message"])
+    else:
+        print(note_result["error_message"])
 
 
 if __name__ == "__main__":

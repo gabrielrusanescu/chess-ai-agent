@@ -59,7 +59,50 @@ class AssistantTools:
             "filename": filename,
             "content": content,
         }
+    def append_note(self, filename: str, note: str) -> dict:
+        """
+        Append a note, comment, or game insight to a Markdown document.
 
+        Use this tool when the user asks to save a thought, add a note about
+        an opening, or record details into a knowledge base file.
+
+        Args:
+            filename: Target Markdown filename, such as "notes.md" or "openings.md".
+            note: The text content to append to the file.
+
+        Returns:
+            A dictionary containing the status of the write operation.
+        """
+        cleaned_note = note.strip()
+
+        if not cleaned_note:
+            return {
+                "status": "error",
+                "filename": filename,
+                "error_message": "The note content cannot be empty.",
+            }
+
+        try:
+            self.knowledge.append_note(filename, cleaned_note)
+        except FileNotFoundError:
+            return {
+                "status": "error",
+                "filename": filename,
+                "error_message": f"Document '{filename}' was not found.",
+            }
+        except Exception as error:
+            return {
+                "status": "error",
+                "filename": filename,
+                "error_message": f"Could not append to '{filename}': {error}",
+            }
+
+        return {
+            "status": "success",
+            "filename": filename,
+            "message": f"Successfully appended note to '{filename}'.",
+        }
+        
     def search_documents(self, keyword: str) -> dict:
         """
         Search all knowledge documents and return short matching excerpts.
