@@ -51,17 +51,15 @@ summer-school-agent/
 |   `-- tools.py
 |
 |-- knowledge/
-|   |-- bigtable.md
-|   |-- cloud_sql.md
-|   |-- cloud_storage.md
-|   |-- compute_engine.md
-|   |-- day1.md
-|   |-- day2.md
-|   |-- day3.md
-|   |-- docker.md
+|   |-- chess_history_and_champions.md
+|   |-- chess_notation_and_rules.md
+|   |-- chess_openings.md
+|   |-- endgames.md
+|   |-- engines_and_analysis.md
 |   |-- faq.md
-|   |-- gke.md
-|   `-- kubernetes.md
+|   |-- pieces_and_movement.md
+|   |-- rules_and_setup.md
+|   `-- tactics_and_strategy.md
 |
 |-- scripts/
 |   |-- generate_dependency_files.py
@@ -264,12 +262,13 @@ The package exposes:
 root_agent
 ```
 
-The agent currently has three tools:
+The agent currently has four tools:
 
 ```text
 list_documents
 read_document
 search_documents
+append_note
 ```
 
 The tools use the local knowledge provider until cloud mode is enabled.
@@ -342,23 +341,15 @@ Do not run these commands before the Vertex AI configuration and authentication 
 Once the ADK agent is connected to Gemini:
 
 ```text
-What workshop documents are available?
+Explain En Passant.
 ```
 
 ```text
-Which documents discuss Docker?
+What is Chess?
 ```
 
 ```text
-Read the Day 2 document and summarize the differences between Cloud Storage, Cloud SQL, and Bigtable.
-```
-
-```text
-Does the workshop material explain Kubernetes Services?
-```
-
-```text
-Which lab introduced GKE?
+How can the Knight move on the Chessboard?
 ```
 
 ## Day 5 extension
